@@ -41,8 +41,8 @@ class Server {
             });
         });
 
-        this.app.use('/', router);
-        this.app.use('/artists', ArtistRouter);
+        this.app.use('/api', router);
+        this.app.use('/api/artists', ArtistRouter);
         // this.app.use('/api/artists', ArtistRouter);
     }
 
