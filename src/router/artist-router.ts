@@ -1,8 +1,8 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import Artist from '../models/artist';
+import Artist, {default as artist} from '../models/artist';
 
 class ArtistRouter {
-    router; Router;
+    router: Router;
 
     constructor() {
         this.router = Router();
@@ -10,7 +10,21 @@ class ArtistRouter {
     }
 
     public GetArtists(req: Request, res: Response): void {
+        Artist.find({}, (err, artists) => {
+           if (err) {
+               const status = req.statusCode;
+               res.json({
+                   status,
+                   err
+               });
+           }
 
+           const status = req.statusCode;
+           res.json({
+               status,
+               artists
+           });
+        });
     }
 
     public GetArtist(req: Request, res: Response): void {
@@ -28,6 +42,15 @@ class ArtistRouter {
     public DeleteArtists(req: Request, res: Response): void {
 
     }
+
+
+
+    routes() {
+        this.router.get('/artists', this.GetArtists);
+    }
 }
 
-// export
+const artistRoutes = new ArtistRouter();
+artistRoutes.routes();
+
+export default artistRoutes.router;
