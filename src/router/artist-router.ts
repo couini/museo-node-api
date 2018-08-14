@@ -14,25 +14,13 @@ class ArtistRouter {
         this.router.get('/', this.GetArtists);
     }
 
-    public GetArtists(req: Request, res: Response): void {
-        /*res.json({
-            message: 'Artists works !'
-        });*/
-        Artist.find({}, (err, artists) => {
-           if (err) {
-               const status = req.statusCode;
-               res.json({
-                   status,
-                   err
-               });
-           }
-
-           const status = req.statusCode;
-           res.json({
-               status,
-               artists
-           });
-        });
+    public async GetArtists(req: Request, res: Response): void {
+        try {
+            const artists = await Artist.find({}).exec();
+            res.status(200).send(artists);
+        } catch (error) {
+            res.status(500).send(error);
+        }
     }
 
     public GetArtist(req: Request, res: Response): void {
