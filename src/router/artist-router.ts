@@ -1,5 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import Artist, {default as artist} from '../models/artist';
+
+import Artist from '../models/artist'
 
 class ArtistRouter {
     router: Router;
@@ -9,7 +10,14 @@ class ArtistRouter {
         this.routes();
     }
 
+    public routes() {
+        this.router.get('/', this.GetArtists);
+    }
+
     public GetArtists(req: Request, res: Response): void {
+        /*res.json({
+            message: 'Artists works !'
+        });*/
         Artist.find({}, (err, artists) => {
            if (err) {
                const status = req.statusCode;
@@ -42,15 +50,9 @@ class ArtistRouter {
     public DeleteArtists(req: Request, res: Response): void {
 
     }
-
-
-
-    routes() {
-        this.router.get('/artists', this.GetArtists);
-    }
 }
 
-const artistRoutes = new ArtistRouter();
-artistRoutes.routes();
+const artistRouter = new ArtistRouter();
+artistRouter.routes();
 
-export default artistRoutes.router;
+export default artistRouter.router;
