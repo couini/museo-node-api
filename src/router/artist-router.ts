@@ -14,7 +14,7 @@ class ArtistRouter {
         this.router.get('/', this.GetArtists);
     }
 
-    public async GetArtists(req: Request, res: Response): void {
+    public async GetArtists(req: Request, res: Response): Promise<void> {
         try {
             const artists = await Artist.find({}).exec();
             res.status(200).send(artists);
