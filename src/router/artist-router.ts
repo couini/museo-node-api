@@ -12,6 +12,7 @@ class ArtistRouter {
 
     public routes() {
         this.router.get('/', this.GetArtists);
+        this.router.get('/:slug', this.GetArtist);
     }
 
     public async GetArtists(req: Request, res: Response): Promise<void> {
@@ -23,8 +24,13 @@ class ArtistRouter {
         }
     }
 
-    public GetArtist(req: Request, res: Response): void {
-
+    public async GetArtist(req: Request, res: Response): Promise<void> {
+        try {
+            const artist = await Artist.findOne({ slug: req.params.slug });
+            res.send(artist);
+        } catch (error) {
+            res.status(500).send(error);
+        }
     }
 
     public CreateArtists(req: Request, res: Response): void {
