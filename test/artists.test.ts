@@ -13,14 +13,14 @@ describe('GET api/artists', () => {
            .then(res => {
                expect(res.status).to.equal(200);
                expect(res).to.be.json;
-               expect(res.body).to.be.an('object');
+               expect(res.body).to.be.an('array');
            });
    });
 
    it('should include Picasso', () => {
        return chai.request(app).get('/api/artists')
            .then(res => {
-              let Picasso = res.body.artists.find(artists => artists.name = 'Picasso');
+              let Picasso = res.body.find(artists => artists.name = 'Picasso');
               expect(Picasso).to.exist;
               expect(Picasso).to.have.all.keys([
                   '_id',
@@ -35,6 +35,18 @@ describe('GET api/artists', () => {
                   'slug'
               ])
            });
-   })
+   });
+
+   it('should return an artist by its slug', () => {
+       return chai.request(app).get('/api/artists/pablo-picasso')
+           .then(res => {
+                let Picasso = res.body;
+                expect(Picasso).to.exist;
+                expect(res.body).to.be.an('object');
+
+                expect(Picasso.name).to.equal('Picasso');
+                expect(Picasso.firstname).to.equal('Pablo');
+           });
+   });
 
 });
