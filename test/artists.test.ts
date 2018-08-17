@@ -50,3 +50,27 @@ describe('GET api/artists', () => {
    });
 
 });
+
+describe('POST api/artists', () => {
+
+    it('should post an artist', () => {
+        const artist = {
+            name: 'Michel-Ange',
+            firstname: null,
+            biography: 'Lorem Ipsum',
+            slug: 'michel-ange',
+            picture: 'michel-ange.jpg',
+            birthplace: 'Caprese Michelangelo, Italie',
+            deathplace: 'Rome, Italie',
+            birthdate: '1475',
+            deathdate: '1564',
+        };
+
+        chai.request(app).post('/api/artists')
+            .send(artist)
+            .then((res) => {
+               expect(res.status).to.equal(200);
+            });
+    });
+
+});
