@@ -9,7 +9,7 @@ let ArtistSchema: Schema = new Schema({
     firstname: {
         type: String,
         default: '',
-        required: true
+        required: false
     },
     slug: {
         type: String,
@@ -46,6 +46,11 @@ let ArtistSchema: Schema = new Schema({
         type: String,
         default: '',
         required: true
+    },
+    uid: {
+       type: Number,
+        default: '',
+        required: false
     }
 });
 
