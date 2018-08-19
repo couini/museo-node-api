@@ -46,11 +46,6 @@ let ArtistSchema: Schema = new Schema({
         type: String,
         default: '',
         required: true
-    },
-    uid: {
-       type: Number,
-        default: '',
-        required: false
     }
 });
 
