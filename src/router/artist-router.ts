@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 
 import Artist from '../models/artist'
+import ArtistController from '../controllers/artist-controller';
 
 class ArtistRouter {
     router: Router;
@@ -11,19 +12,20 @@ class ArtistRouter {
     }
 
     public routes() {
-        this.router.get('/', this.GetArtists);
+        this.router.get('/', ArtistController.GetArtists);
         this.router.get('/:slug', this.GetArtist);
-        this.router.post('/', this.CreateArtists);
+        this.router.post('/', this.CreateArtist);
+        this.router.delete('/:slug', this.DeleteArtist);
     }
 
-    public async GetArtists(req: Request, res: Response): Promise<void> {
+    /*public async GetArtists(req: Request, res: Response): Promise<void> {
         try {
             const artists = await Artist.find({}).exec();
             res.status(200).send(artists);
         } catch (error) {
             res.status(500).send(error);
         }
-    }
+    }*/
 
     public async GetArtist(req: Request, res: Response): Promise<void> {
         try {
@@ -34,12 +36,11 @@ class ArtistRouter {
         }
     }
 
-    public async CreateArtists(req: Request, res: Response): Promise<void> {
+    public async CreateArtist(req: Request, res: Response): Promise<void> {
 
         try {
 
             const properties = req.body;
-            const uid = await artistRouter.generateUid(25);
 
             const artist = new Artist({
                 name: properties.name,
@@ -50,8 +51,7 @@ class ArtistRouter {
                 birthdate: properties.birthdate,
                 deathdate: properties.deathdate,
                 picture: properties.picture,
-                slug: properties.slug,
-                uid: uid
+                slug: properties.slug
             });
 
             await artist.save();
@@ -67,26 +67,18 @@ class ArtistRouter {
 
     }
 
-    public DeleteArtists(req: Request, res: Response): void {
+    public async DeleteArtist(req: Request, res: Response): Promise<void> {
+        try {
+            const filter = {
+                'slug': req.params.slug
+            };
 
-    }
+            const artist = await Artist.findOneAndRemove(filter);
+            res.status(200).send(artist);
 
-    private generateUid(length: number) {
-        return new Promise((resolve, reject) => {
-            const values = '0123456789';
-            let uniqueId = '';
-            for (let i = length; i > 0; --i) {
-                uniqueId += values[Math.round(Math.random() * (values.length - 1))];
-            }
-
-            Artist.findOne({ 'data.uid': uniqueId }, (err, document) => {
-                if (document) {
-                    artistRouter.generateUid(15);
-                } else {
-                    resolve(uniqueId);
-                }
-            });
-        });
+        } catch (e) {
+            res.status(500).send(e);
+        }
     }
 }
 

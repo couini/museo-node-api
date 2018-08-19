@@ -13,7 +13,9 @@
     "express": "^4.16.3",
     "helmet": "^3.13.0",
     "mongoose": "^4.13.11",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.0",
+    "sinon": "^6.1.5",
+    "sinon-mongoose": "^2.2.1"
   },
   "devDependencies": {
     "@types/body-parser": "0.0.33",
