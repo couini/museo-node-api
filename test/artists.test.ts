@@ -1,12 +1,38 @@
 import * as mocha from 'mocha';
 import * as chai from 'chai';
 import chaiHttp = require('chai-http');
-import app from '../src/server';
-
 chai.use(chaiHttp);
+import app from '../src/server';
 const expect = chai.expect;
 
-describe('GET api/artists', () => {
+import Artist from '../src/models/artist'
+
+describe('Artists CRUD', () => {
+
+    Artist.collection.drop();
+
+    beforeEach(function(done){
+        const artist = new Artist({
+            name: "Monet",
+            firstname: "Claude",
+            biography: "Lorem Ipsum",
+            slug: "claude-monet",
+            picture: "monet.jpg",
+            birthdate: "14 novembre 1840",
+            deathdate: "5 décembre 1926",
+            birthplace: "Paris, France",
+            deathplace: "Giverny, France"
+        });
+
+        artist.save(function(err) {
+            done();
+        });
+    });
+
+    afterEach(function(done){
+        Artist.collection.drop();
+        done();
+    });
 
    it('responds with object', () => {
        return chai.request(app).get('/api/artists')
@@ -17,13 +43,14 @@ describe('GET api/artists', () => {
            });
    });
 
-   it('should include Picasso', () => {
+   it('should include Monet', () => {
        return chai.request(app).get('/api/artists')
            .then(res => {
-              let Picasso = res.body.find(artists => artists.name = 'Picasso');
-              expect(Picasso).to.exist;
-              expect(Picasso).to.have.all.keys([
+              let Monet = res.body.find(artists => artists.name = 'Monet');
+              expect(Monet).to.exist;
+              expect(Monet).to.have.all.keys([
                   '_id',
+                  '__v',
                   'biography',
                   'birthdate',
                   'deathdate',
@@ -38,20 +65,16 @@ describe('GET api/artists', () => {
    });
 
    it('should return an artist by its slug', () => {
-       return chai.request(app).get('/api/artists/pablo-picasso')
+       return chai.request(app).get('/api/artists/claude-monet')
            .then(res => {
-                let Picasso = res.body;
-                expect(Picasso).to.exist;
+                let Monet = res.body;
+                expect(Monet).to.exist;
                 expect(res.body).to.be.an('object');
 
-                expect(Picasso.name).to.equal('Picasso');
-                expect(Picasso.firstname).to.equal('Pablo');
+                expect(Monet.name).to.equal('Monet');
+                expect(Monet.firstname).to.equal('Claude');
            });
    });
-
-});
-
-describe('POST api/artists', () => {
 
     it('should post an artist', () => {
         const artist = {
@@ -69,7 +92,8 @@ describe('POST api/artists', () => {
         chai.request(app).post('/api/artists')
             .send(artist)
             .then((res) => {
-               expect(res.status).to.equal(200);
+                expect(res.status).to.equal(200);
+                expect(res.body.length).to.equal(2);
             });
     });
 
