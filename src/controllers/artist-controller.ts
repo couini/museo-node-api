@@ -1,17 +1,25 @@
 import Artist from '../models/artist'
 
-let ArtistController = {
+class ArtistController {
 
-    // Get all artists
-    GetArtists: function(req, res){
-        Artist.find({}, function(err, artists){
-            if (err) {
-                res.json({status: false, error: "Something went wrong"});
-                return;
+    /**
+     * Get all artists
+     *
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     * @constructor
+     */
+    public async GetArtists(req, res) {
+        await Artist.find({}, function(err, artists) {
+            try {
+                res.status(200).send(artists);
+            } catch (e) {
+                let errorMessage = e.message || e;
+                res.status(500).send(errorMessage);
             }
-            res.status(200).send(artists);
         });
-    },
-};
+    }
+}
 
-export default ArtistController;
+export default new ArtistController();
