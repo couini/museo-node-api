@@ -9,8 +9,6 @@ import Artist from '../src/models/artist'
 
 describe('Artists CRUD', () => {
 
-    Artist.collection.drop();
-
     beforeEach(function(done){
         const artist = new Artist({
             name: "Monet",
@@ -96,5 +94,13 @@ describe('Artists CRUD', () => {
                 expect(res.body.length).to.equal(2);
             });
     });
+
+    /*it('should delete an artist', function(done) {
+        chai.request(app).del('/api/artists/claude-monet')
+            .then((res) => {
+                expect(res.status).to.equal(200);
+                done();
+            });
+    });*/
 
 });
