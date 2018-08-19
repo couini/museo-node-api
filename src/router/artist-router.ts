@@ -13,7 +13,7 @@ class ArtistRouter {
 
     public routes() {
         this.router.get('/', ArtistController.GetArtists);
-        this.router.get('/:slug', this.GetArtist);
+        this.router.get('/:slug', ArtistController.GetArtist);
         this.router.post('/', this.CreateArtist);
         this.router.delete('/:slug', this.DeleteArtist);
     }
