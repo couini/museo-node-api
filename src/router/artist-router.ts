@@ -18,14 +18,14 @@ class ArtistRouter {
         this.router.delete('/:slug', this.DeleteArtist);
     }
 
-    /*public async GetArtists(req: Request, res: Response): Promise<void> {
+    public async GetArtists(req: Request, res: Response): Promise<void> {
         try {
             const artists = await Artist.find({}).exec();
             res.status(200).send(artists);
         } catch (error) {
             res.status(500).send(error);
         }
-    }*/
+    }
 
     public async GetArtist(req: Request, res: Response): Promise<void> {
         try {
