@@ -1,7 +1,8 @@
 import { Router, Request, Response, NextFunction } from 'express';
 
 import Artist from '../models/artist'
-import ArtistController from '../controllers/artist-controller';
+let ArtistController = require('../controllers/artist-controller');
+import { getArtists, postArtist, getArtist, putArtist, deleteArtist } from "../controllers/artist-controller";
 
 class ArtistRouter {
     router: Router;
@@ -12,10 +13,11 @@ class ArtistRouter {
     }
 
     public routes() {
-        this.router.get('/', ArtistController.GetArtists);
-        this.router.get('/:slug', ArtistController.GetArtist);
-        this.router.post('/', this.CreateArtist);
-        this.router.delete('/:slug', this.DeleteArtist);
+        this.router.get('/', getArtists);
+        this.router.get('/:slug', getArtist);
+        this.router.post('/', postArtist);
+        this.router.put('/:slug', putArtist);
+        this.router.delete('/:slug', deleteArtist);
     }
 
     public async GetArtists(req: Request, res: Response): Promise<void> {
