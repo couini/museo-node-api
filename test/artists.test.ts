@@ -1,31 +1,89 @@
-import * as mocha from 'mocha';
 import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 chai.use(chaiHttp);
-import app from '../src/server';
 const expect = chai.expect;
+import app from '../src/server';
+const mongoose = require('mongoose');
+require('sinon-mongoose');
+const sinon = require('sinon');
 
-import Artist from '../src/models/artist'
+import Artist from '../src/models/artist';
 
 describe('Artists CRUD', () => {
 
-    beforeEach(function(done){
-        const artist = new Artist({
-            name: "Monet",
-            firstname: "Claude",
-            biography: "Lorem Ipsum",
-            slug: "claude-monet",
-            picture: "monet.jpg",
-            birthdate: "14 novembre 1840",
-            deathdate: "5 décembre 1926",
-            birthplace: "Paris, France",
-            deathplace: "Giverny, France"
+    /*it('should post a new artist', (done) => {
+        const ArtistMock = sinon.mock(new Artist({
+           'name': 'Monet',
+           'firstname': 'Claude',
+           'biography': 'Lorem Ipsum',
+           'birthdate': '14 novembre 1840',
+           'deathdate': '5 décembre 1926',
+           'birthplace': 'Paris',
+           'deathplace': 'Giverny',
+           'slug': 'claude-monet',
+           'picture': 'claude-monet.jpg'
+        }));
+
+        const artist = ArtistMock.object;
+        const expectedResult = { status: true };
+        ArtistMock.expects('save').yields(null, expectedResult);
+        artist.save(function (err, result) {
+            console.log(result);
+            ArtistMock.verify();
+            ArtistMock.restore();
+            expect(result.status).to.be.true;
+            done();
+        });
+    });*/
+
+    it('should lists all artists', async () => {
+        return chai.request(app).get('/api/artists')
+            .then(res => {
+                expect(res.status).to.equal(200);
+                expect(res).to.be.json;
+                expect(res.body).to.be.an('array');
+            });
+    });
+
+    it('should name be required', (done) => {
+        const entry = new Artist({
+            'name': null, // name is null, it returns an error
+            'firstname': 'Claude',
+            'biography': 'Lorem Ipsum',
+            'birthdate': '14 novembre 1840',
+            'deathdate': '5 décembre 1926',
+            'birthplace': 'Paris',
+            'deathplace': 'Giverny',
+            'slug': 'claude-monet',
+            'picture': 'claude-monet.jpg'
         });
 
-        artist.save(function(err) {
+        entry.save((error) => {
+            expect(error).to.not.be.null;
             done();
         });
     });
+
+    it('should post an artist', (done) => {
+        const entry = new Artist({
+            'name': 'Monet',
+            'firstname': 'Claude',
+            'biography': 'Lorem Ipsum',
+            'birthdate': '14 novembre 1840',
+            'deathdate': '5 décembre 1926',
+            'birthplace': 'Paris',
+            'deathplace': 'Giverny',
+            'slug': 'claude-monet',
+            'picture': 'claude-monet.jpg'
+        });
+
+        entry.save((res) => {
+            console.log(res);
+            done();
+        });
+    });
+
+    /*
 
     afterEach(function(done){
         Artist.collection.drop();

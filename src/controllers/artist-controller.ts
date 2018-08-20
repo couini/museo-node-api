@@ -1,47 +1,61 @@
 import Artist from '../models/artist'
+import * as _ from 'lodash';
+let mongoose = require('mongoose');
+let Book = require('../models/artist');
 
-class ArtistController {
+export function getArtists(req, res) {
+    let query = Artist.find({});
+    query.exec((err, artists) => {
+        if(err) {
+            res.send(err);
+        }
 
-    /**
-     * Get all artists
-     *
-     * @param req
-     * @param res
-     * @returns {Promise<void>}
-     * @constructor
-     */
-    public async GetArtists(req, res) {
-        await Artist.find({}, function(err, artists) {
-            try {
-                res.status(200).send(artists);
-            } catch (e) {
-                let errorMessage = e.message || e;
-                res.status(500).send(errorMessage);
-            }
-        });
-    }
-
-    /**
-     * Get artist by slug
-     * 
-     * @param req
-     * @param res
-     * @returns {Promise<void>}
-     * @constructor
-     */
-    public async GetArtist(req, res) {
-        await Artist.find({ slug: req.params.slug }, function(err, artist) {
-            try {
-                if (artist.length === 0) {
-                    res.status(500).send({status: 'erreur', message: 'Artiste inexistant'});
-                } else {
-                    res.status(200).send(artist);
-                }
-            } catch (e) {
-                res.status(500).send(e.error.message);
-            }
-        });
-    }
+        res.send(200).send(artists);
+    });
 }
 
-export default new ArtistController();
+export function postArtist(req, res) {
+    const newArtist = new Artist(req.body);
+
+    newArtist.save((err, artist) => {
+        if (err) {
+            res.status(500).send(err);
+        }
+
+        res.status(200).send(artist);
+    })
+}
+
+export function getArtist(req, res) {
+    Artist.find({ slug: req.params.slug }, (err, artist) => {
+        if (err) {
+            res.status(500).send(err);
+        } else if (_.isEmpty(artist)) {
+            res.status(500).send({ status: 500, message: 'Artiste inexistant' });
+        } else {
+            res.status(200).send(artist);
+        }
+    });
+}
+
+export function putArtist(req, res) {
+    Artist.findOneAndUpdate({ slug: req.params.slug }, req.body, (err, artist) => {
+        if (err) {
+            res.status(500).send(err);
+        } else if (_.isEmpty(artist)) {
+            res.status(500).send({ status: 500, message: 'Artiste inexistant' });
+        } else {
+            res.status(200).send(artist);
+        }
+    });
+}
+
+export function deleteArtist(req, res) {
+    Artist.findOneAndRemove({ slug: req.params.slug }, (err) => {
+        if (err) {
+            res.status(500).send(err);
+        }
+
+        res.status(200).send();
+    })
+}
