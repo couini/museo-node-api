@@ -7,13 +7,16 @@
     "@types/compression": "0.0.36",
     "@types/cors": "^2.8.4",
     "@types/helmet": "0.0.38",
+    "assert": "^1.4.1",
     "body-parser": "^1.18.3",
     "compression": "^1.7.3",
     "debug": "^3.1.0",
     "express": "^4.16.3",
     "helmet": "^3.13.0",
     "mongoose": "^4.13.11",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.0",
+    "sinon": "^6.1.5",
+    "sinon-mongoose": "^2.2.1"
   },
   "devDependencies": {
     "@types/body-parser": "0.0.33",
