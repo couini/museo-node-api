@@ -73,7 +73,8 @@ describe('Artists CRUD', () => {
                   'firstname',
                   'name',
                   'picture',
-                  'slug'
+                  'slug',
+                  'uid'
               ])
            });
    });
@@ -91,7 +92,7 @@ describe('Artists CRUD', () => {
    });
 
     it('should post an artist', () => {
-        const artist = {
+        const artist = new Artist({
             name: 'Michel-Ange',
             firstname: null,
             biography: 'Lorem Ipsum',
@@ -101,7 +102,7 @@ describe('Artists CRUD', () => {
             deathplace: 'Rome, Italie',
             birthdate: '1475',
             deathdate: '1564',
-        };
+        });
 
         chai.request(app).post('/api/artists')
             .send(artist)
@@ -120,3 +121,4 @@ describe('Artists CRUD', () => {
     });*/
 
 });
+*/

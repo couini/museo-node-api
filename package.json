@@ -7,6 +7,7 @@
     "@types/compression": "0.0.36",
     "@types/cors": "^2.8.4",
     "@types/helmet": "0.0.38",
+    "assert": "^1.4.1",
     "body-parser": "^1.18.3",
     "compression": "^1.7.3",
     "debug": "^3.1.0",
