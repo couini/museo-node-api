@@ -1,7 +1,5 @@
 import Artist from '../models/artist'
 import * as _ from 'lodash';
-let mongoose = require('mongoose');
-let Book = require('../models/artist');
 
 export function getArtists(req, res) {
     let query = Artist.find({});
