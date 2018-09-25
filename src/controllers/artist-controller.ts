@@ -10,7 +10,7 @@ export function getArtists(req, res) {
             res.send(err);
         }
 
-        res.send(200).send(artists);
+        res.status(200).json(artists);
     });
 }
 
@@ -33,7 +33,7 @@ export function getArtist(req, res) {
         } else if (_.isEmpty(artist)) {
             res.status(500).send({ status: 500, message: 'Artiste inexistant' });
         } else {
-            res.status(200).send(artist);
+            res.status(200).json(artist);
         }
     });
 }

@@ -9,6 +9,7 @@ const sinonmongoose = require('sinon-mongoose');
 mongoose.Promise = global.Promise;
 
 const sinon = require('sinon');
+const request = require('request');
 
 import Artist from '../src/models/artist';
 
@@ -64,32 +65,7 @@ describe('GET api/artists', () => {
 
 describe('Artists CRUD', () => {
 
-    /*it('should post a new artist', (done) => {
-        const ArtistMock = sinon.mock(new Artist({
-           'name': 'Monet',
-           'firstname': 'Claude',
-           'biography': 'Lorem Ipsum',
-           'birthdate': '14 novembre 1840',
-           'deathdate': '5 décembre 1926',
-           'birthplace': 'Paris',
-           'deathplace': 'Giverny',
-           'slug': 'claude-monet',
-           'picture': 'claude-monet.jpg'
-        }));
-
-        const artist = ArtistMock.object;
-        const expectedResult = { status: true };
-        ArtistMock.expects('save').yields(null, expectedResult);
-        artist.save(function (err, result) {
-            console.log(result);
-            ArtistMock.verify();
-            ArtistMock.restore();
-            expect(result.status).to.be.true;
-            done();
-        });
-    });*/
-
-    it('should lists all artists', async () => {
+    it('responds with object', () => {
         return chai.request(app).get('/api/artists')
             .then(res => {
                 expect(res.status).to.equal(200);
@@ -113,27 +89,9 @@ describe('Artists CRUD', () => {
 
         entry.save((error) => {
             expect(error).to.not.be.null;
-            done();
-        });
-    });
-
-    it('should post an artist', (done) => {
-        const entry = new Artist({
-            'name': 'Monet',
-            'firstname': 'Claude',
-            'biography': 'Lorem Ipsum',
-            'birthdate': '14 novembre 1840',
-            'deathdate': '5 décembre 1926',
-            'birthplace': 'Paris',
-            'deathplace': 'Giverny',
-            'slug': 'claude-monet',
-            'picture': 'claude-monet.jpg'
         });
 
-        entry.save((res) => {
-            console.log(res);
-            done();
-        });
+        done();
     });
 
     /*
