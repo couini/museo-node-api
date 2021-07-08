@@ -51,13 +51,12 @@ class Server {
 
         router.get('/', (req, res, next) => {
             res.json({
-                message: 'Hello World!'
+                message: 'Museo works !!'
             });
         });
 
-        this.app.use('/', router);
-        this.app.use('/artists', ArtistRouter);
-        // this.app.use('/api/artists', ArtistRouter);
+        this.app.use('/api', router);
+        this.app.use('/api/artists', ArtistRouter);
     }
 
     private mongoSetup(): void{

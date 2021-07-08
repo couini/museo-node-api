@@ -9,7 +9,7 @@ let ArtistSchema: Schema = new Schema({
     firstname: {
         type: String,
         default: '',
-        required: true
+        required: false
     },
     slug: {
         type: String,
